@@ -1,0 +1,5 @@
+### ignores .env files ###
+*.env
+
+### Python files ###
+__pycache__
