@@ -11,6 +11,7 @@ Now with v2 Atelier Translator has a web ui and it's more easy than ever to use,
 5. Follow the steps that the web ui will tell you and enjoy!
 
 # Credits
+Thanks to [Ferripro321](https://github.com/Ferripro321) for original [Atelier Translator](https://github.com/Ferripro321/Atelier-Translator)
 
 Thanks to [azusagawa.it](https://github.com/Azusagawa-it) for the [EBM extractor for a24 (Ryza 3)](https://github.com/Azusagawa-it/a24_ebm)
 
