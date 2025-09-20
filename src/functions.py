@@ -293,10 +293,16 @@ class UI:
         gust_pak_path = gust_pak_path.replace("\\", "/")
         game_path = game_path.replace("\\", "/")
         try:
+            pak_path = game_path + "/Data/PACK00.PAK"
+            print(pak_path)
+            CustomFileSystem.copy_file(pak_path, os.path.join(local_folder, "Unpack", "PACK00.PAK"))
+            subprocess.run([gust_pak_path + "/gust_pak.exe", os.path.join(local_folder, "Unpack", "PACK00.PAK")], cwd=local_folder)
+
             pak_path = game_path + "/Data/PACK01.PAK"
             print(pak_path)
             CustomFileSystem.copy_file(pak_path, os.path.join(local_folder, "Unpack", "PACK01.PAK"))
             subprocess.run([gust_pak_path + "/gust_pak.exe", os.path.join(local_folder, "Unpack", "PACK01.PAK")], cwd=local_folder)
+
             print(Fore.GREEN + "Done" + Fore.RESET)
             return "Done"
         except:
