@@ -36,16 +36,18 @@ def request_translation(prompt, translate, path, gpt_model):
 def gust_tools_translator_handler(gust_ebm, prompt, model):
     ebm_folders_num = 0
     current_ebm_folder_num = 0
-
-    for ebm_folder in CustomFileSystem.get_subfolder_paths(local_folder + "Unpack/event/event_en"):
-        ebm_folders_num += 1
-    for ebm_folder in CustomFileSystem.get_subfolder_paths(local_folder + "Unpack/event/event_en"):
-        ebm_folder_key = CustomFileSystem.get_last_folder_name(ebm_folder)
+    print("Start GUST Tools EBM Translation")
+    for ebm_folder in CustomFileSystem.get_files_in_folder(local_folder + "Unpack/master/eng/eventmessagedata"):
+        ebm_folders_num += 1        
+    print("Total Folders to process: " + str(ebm_folders_num))    
+    ebm_folder = local_folder + "Unpack/master/eng/eventmessagedata"
+    for file_path in CustomFileSystem.get_files_with_extension(ebm_folder, ".ebm"):
+        print(Fore.GREEN + "Starting File " + os.path.basename(file_path) + " -> " + str(current_ebm_folder_num) + " / " + str(ebm_folders_num) + Fore.RESET)
         current_ebm_folder_num += 1
-        print(Fore.GREEN + "Starting Folder " + ebm_folder_key + " -> " + str(current_ebm_folder_num) + " / " + str(ebm_folders_num) + Fore.RESET)
-        for file_path in CustomFileSystem.get_files_with_extension(ebm_folder, ".ebm"):
-            subprocess.run([gust_ebm + "/gust_ebm.exe", file_path])
-            CustomFileSystem.remove_file(file_path)
+        subprocess.run([gust_ebm + "/gust_ebm.exe", file_path])
+        #CustomFileSystem.remove_file(file_path)
+    print(Fore.GREEN + "Finished: " + Fore.RESET)  
+"""            
         for json_file in CustomFileSystem.get_files_with_extension(ebm_folder, ".json"):
             with open(json_file, "r", encoding="utf-8") as file:
                 file_contents = file.read()
@@ -98,7 +100,7 @@ def gust_tools_translator_handler(gust_ebm, prompt, model):
                 subprocess.run([gust_ebm + "/gust_ebm.exe", local_folder + "Translated/" + ebm_folder_key + "/" + os.path.basename(json_file)])
                 CustomFileSystem.remove_file(local_folder + "Translated/" + ebm_folder_key + "/" + os.path.basename(json_file))
                 print(Fore.GREEN + "Finished: " + json_file + Fore.RESET)
-
+"""
 def custom_ebm_translation_handler(prompt, model):
     ebm_folders_num = 0
     current_ebm_folder_num = 0
