@@ -1,29 +1,30 @@
 # This is the main file of the app, and should be the one you open to use the app. The ui and some functions are stored here
 
-import gradio as gr
-import webbrowser
+import gradio as gr     # นำเข้าไลบรารี gradio สำหรับสร้าง UI พร้อมตั้งชื่อย่อเป็น gr
+import webbrowser       # นำเข้าไลบรารี webbrowser สำหรับเปิดเว็บเบราว์เซอร์
 
-from functions import *
+from functions import *     # นำเข้าโมดูล functions.py
 from fixer import *
 
-def check_prompt_file():    
-    if not os.path.exists("prompt.txt"):
-        with open("prompt.txt", 'w', encoding='utf-8') as file:
-            file.write(original_prompt)
-            print(f"Created prompt.txt")
+def check_prompt_file():    # ประกาศฟังก์ชันเพื่อตรวจสอบไฟล์ prompt.txt
+    if not os.path.exists("prompt.txt"):    # ถ้าไฟล์ prompt.txt ไม่อยู่ในไดเรกทอรีปัจจุบัน
+        with open("prompt.txt", 'w', encoding='utf-8') as file: # สร้างไฟล์ prompt.txt ใหม่ โดยสามารถเรียกผ่านตัวแปร file
+            file.write(original_prompt)     # original_prompt มาจาก functions.py
+            print(f"Created prompt.txt")    # แสดงข้อความ "Created prompt.txt" บน Console log
     else:
         print(f"prompt.txt already exists.")
 
 def translation_start(gust_tools_path, is_a24, openai_apikey):
-    global model
+    global model                    # ประกาศตัวแปร model ว่าเป็นตัวแปรจาก global variable ซึ่งอยู่ใน functions.py
     print("translation_start prompt:" + read_prompt_file())
-    openai.api_key = openai_apikey
+    openai.api_key = openai_apikey  # กำหนดค่า API key ของ OpenAI 
+    # เช็คว่า is_a24 เป็นจริงหรือไม่ หากเป็นจริงให้เรียกใช้ฟังก์ชัน custom_ebm_translation_handler หากไม่เป็นจริงให้เรียกใช้ฟังก์ชัน gust_tools_translator_handler
     custom_ebm_translation_handler(read_prompt_file(), model) if is_a24 else gust_tools_translator_handler(gust_tools_path, read_prompt_file(), model)
     return "ok"
 
 def refresh_errors():
     files_to_fix = []
-    for file in CustomFileSystem.get_files_in_folder(local_folder + "/Errors"):
+    for file in CustomFileSystem.get_files_in_folder(local_folder + "/Errors"): # ดึงรายชื่อไฟล์ทั้งหมดในโฟลเดอร์ Errors
         if "extracted-strings-" in os.path.basename(file):
             print("Found extracted: " + CustomFileSystem.get_text_after_specific_text(file, "extracted-strings-"))
             files_to_fix.append(CustomFileSystem.get_text_after_specific_text(file, "extracted-strings-"))

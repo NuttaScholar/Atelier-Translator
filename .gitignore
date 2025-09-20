@@ -1,5 +1,12 @@
 ### ignores .env files ###
 *.env
 
+Unpack
+env
+
+prompt.txt
+test.py
+
+
 ### Python files ###
 __pycache__
